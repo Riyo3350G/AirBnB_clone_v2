@@ -24,25 +24,25 @@ def do_deploy(archive_path):
         put(archive_path, "/tmp/")
 
         # Create the target directory on the remote server
-        run("sudo mkdir -p {}".format(no_ext_path))
+        run("mkdir -p {}".format(no_ext_path))
 
         # Extract the archive contents into the target directory
-        run("sudo tar -xzf /tmp/{} -C {}".format(file_name, no_ext_path))
+        run("tar -xzf /tmp/{} -C {}".format(file_name, no_ext_path))
 
         # Remove the uploaded archive from the /tmp/ directory
-        run("sudo rm /tmp/{}".format(file_name))
+        run("rm /tmp/{}".format(file_name))
 
         # Move the extracted files and directories to the target directory
-        run("sudo mv {}/web_static/* {}".format(no_ext_path, no_ext_path))
+        run("mv {}/web_static/* {}".format(no_ext_path, no_ext_path))
 
         # Remove the redundant web_static subdirectory
-        run("sudo rm -rf {}/web_static".format(no_ext_path))
+        run("rm -rf {}/web_static".format(no_ext_path))
 
         # Remove the existing symbolic link to /data/web_static/current
-        run("sudo rm -rf /data/web_static/current")
+        run("rm -rf /data/web_static/current")
 
         # Create a new symbolic link to the deployed content as the new version
-        run("sudo ln -s {} /data/web_static/current".format(no_ext_path))
+        run("ln -s {} /data/web_static/current".format(no_ext_path))
         print("New version deployed!")
         return True  # Deployment was successful
     except:
