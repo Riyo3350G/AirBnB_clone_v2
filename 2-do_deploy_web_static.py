@@ -44,5 +44,5 @@ def do_deploy(archive_path):
         run("sudo ln -s {} /data/web_static/current".format(no_ext_path))
         print("New version deployed!")
         return True  # Deployment was successful
-    except Exception as err:
+    except:
         return False  # Deployment failed
