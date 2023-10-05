@@ -5,9 +5,12 @@ archive to your web servers, using the function deploy"""
 import os.path as path
 from fabric.api import *
 from datetime import datetime
+
+
 env.hosts = ['52.3.255.32', '18.208.120.88']
 
 
+@runs_once
 def do_pack():
     """create an archive of the web_static folder"""
     try:
@@ -21,6 +24,7 @@ def do_pack():
         return None
 
 
+@task
 def do_deploy(archive_path):
     """ fun: distributes an archive to your web servers """
     if not path.exists(archive_path):
@@ -46,10 +50,12 @@ def do_deploy(archive_path):
                                                           no_ext_path))
         print("New version deployed!")
         return True
-    except Exception:
+    except Exception as e:
+        print(e)
         return False
 
 
+@task
 def deploy():
     """creates and distributes an archive to your web servers"""
     archive_path = do_pack()
