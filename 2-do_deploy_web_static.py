@@ -19,7 +19,7 @@ def do_deploy(archive_path):
         no_ext_file = file_name.split(".")[0]
         # Target directory path
         no_ext_path = "/data/web_static/releases/" + no_ext_file
-        
+
         # Upload the archive to the /tmp/ directory on the remote server
         put(archive_path, "/tmp/")
 
