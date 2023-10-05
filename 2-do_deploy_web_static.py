@@ -21,29 +21,42 @@ def do_deploy(archive_path):
         no_ext_path = "/data/web_static/releases/" + no_ext_file
 
         # Upload the archive to the /tmp/ directory on the remote server
-        put(archive_path, "/tmp/")
+        if put(archive_path, "/tmp/").failed is True:
+            return False
 
         # Create the target directory on the remote server
-        run("mkdir -p {}".format(no_ext_path))
+        if run("mkdir -p /data/web_static/releases/{}/".
+               format(no_ext_file)).failed is True:
+            return False
 
         # Extract the archive contents into the target directory
-        run("tar -xzf /tmp/{} -C {}".format(file_name, no_ext_path))
+        if run("sudo tar -xzf /tmp/{} -C {}".format(file_name, no_ext_path)).failed\
+           is True:
+            return False
 
         # Remove the uploaded archive from the /tmp/ directory
-        run("rm /tmp/{}".format(file_name))
+        if run("rm /tmp/{}".format(file_name)).failed is True:
+            return False
 
         # Move the extracted files and directories to the target directory
-        run("mv {}/web_static/* {}".format(no_ext_path, no_ext_path))
+        if run("sudo mv {}/web_static/* {}".format(no_ext_path, no_ext_path)).failed\
+           is True:
+            return False
 
         # Remove the redundant web_static subdirectory
-        run("rm -rf {}/web_static".format(no_ext_path))
+        if run("rm -rf {}/web_static".format(no_ext_path)).failed is True:
+            return False
 
         # Remove the existing symbolic link to /data/web_static/current
-        run("rm -rf /data/web_static/current")
+        if run("rm -rf /data/web_static/current").failed is True:
+            return False
 
         # Create a new symbolic link to the deployed content as the new version
-        run("ln -s {} /data/web_static/current".format(no_ext_path))
+        if run("ln -s {} /data/web_static/current".format(no_ext_path)).failed\
+           is True:
+            return False
+        
         print("New version deployed!")
-        return True  # Deployment was successful
-    except:
+        return True  # Deployment successful
+    except Exception as e:
         return False  # Deployment failed
