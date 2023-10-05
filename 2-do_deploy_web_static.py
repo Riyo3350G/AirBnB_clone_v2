@@ -11,7 +11,6 @@ def do_deploy(archive_path):
     """func that distributes an archive to your web servers"""
     if exists(archive_path) is False:
         return False
-    try:
         # Extract relevant information from the archive path
         # Extract the filename from the path
         file_name = archive_path.split("/")[-1]
@@ -19,7 +18,7 @@ def do_deploy(archive_path):
         no_ext_file = file_name.split(".")[0]
         # Target directory path
         no_ext_path = "/data/web_static/releases/" + no_ext_file
-
+     try:
         # Upload the archive to the /tmp/ directory on the remote server
         put(archive_path, "/tmp/")
 
