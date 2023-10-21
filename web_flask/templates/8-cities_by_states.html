@@ -6,12 +6,12 @@
     <BODY>
         <H1>States</H1>
         <UL>
-        {% for state in states|sort(attribute='name') %}
-            <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
+        {% for k, v in states.items() %}
+            <LI>{{ v.id }}: <B>{{ v.name }}</B></LI>
             <UL>
-            {% for city in state.cities|sort(attribute='name') %}
-                <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
-            {% endfor %}
+                {% for city in v.cities|sort(attribute='name') %}
+                    <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
+                {% endfor %}
             </UL>
         {% endfor %}
         </UL>
