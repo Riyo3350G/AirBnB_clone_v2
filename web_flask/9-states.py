@@ -18,20 +18,19 @@
 """
 from flask import Flask
 from flask import render_template
+from models import *
 from models import storage
-from models.state import State
-from models.city import City
 
 
 app = Flask(__name__)
 
 
+@app.route('/states', strict_slashes=False)
 @app.route('/states/<id>', strict_slashes=False)
-@app.route('/states', strict_slashes=False, defaults={'id': None})
-def states_list(id):
+def states_list(id=None):
     """display HTML page: (inside the tag BODY)"""
-    states = storage.all(State)
-    if id:
+    states = storage.all('State')
+    if id is not None:
         id = 'State.' + id
     return render_template('9-states.html', states=states, id=id)
 
